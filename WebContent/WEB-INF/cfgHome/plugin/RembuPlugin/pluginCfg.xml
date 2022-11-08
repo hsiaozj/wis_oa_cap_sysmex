@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plugin>
+    <id>RembuPlugin</id> 
+    <name>预算申请剩余金额查询</name>
+    <category>514654</category>
+</plugin>

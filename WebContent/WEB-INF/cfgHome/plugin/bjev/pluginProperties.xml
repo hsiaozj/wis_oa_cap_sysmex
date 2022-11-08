@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ctpConfig>
+	<bjev>
+		<enabled mark="{option,0,1} {FLAG}" desc="是否启用北汽新能源集成自定义控件 0--不启用  1--启用">1</enabled>
+	</bjev>
+</ctpConfig>

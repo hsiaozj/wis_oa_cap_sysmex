@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plugin>
+    <id>budgetPlugin</id> 
+    <name>可用预算查询</name>
+    <category>999654</category>
+</plugin>

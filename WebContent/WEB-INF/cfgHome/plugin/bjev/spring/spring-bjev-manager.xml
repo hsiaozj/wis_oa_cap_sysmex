@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="byName">
+	<bean id="dataHandleWebservice"
+		class="com.bjev.apps.service.impl.DataHandleWebserviceImpl"/>
+
+	<bean id="errLogService"
+		class="com.seeyon.apps.bjev.log.impl.LogServiceImpl" />
+
+	<bean id="pocFormServices"
+		class="com.seeyon.apps.bjev.services.impl.FormServicesImpl" />
+
+	<bean id="pocDataHandleWebservice"
+		class="com.bjev.apps.service.impl.DataHandleWebserviceImpl" />
+
+	<!-- 财务预算申请单创建 -->
+	<bean id="financialBudgetNode"
+		class="com.seeyon.apps.bjev.node.FinancialBudgetNode" />
+
+	<bean id="financialBudgetEnpService"
+		class="com.seeyon.apps.bjev.enp.financialBudget.FinancialBudgetEnpImpl" />
+
+	<bean id="financialBudgetService"
+		class="com.seeyon.apps.bjev.services.impl.financialBudget.FinancialBudgetServiceImpl" />
+
+	<!-- 采购预算申请单 -->
+	<bean id="purchaseBudgetNode"
+		class="com.seeyon.apps.bjev.node.PurchaseBudgetNode" />
+
+	<bean id="purchaseBudgetEnpService"
+		class="com.seeyon.apps.bjev.enp.purchaseBudget.PurchaseBudgetEnpImpl" />
+
+	<bean id="purchaseBudgetService"
+		class="com.seeyon.apps.bjev.services.impl.purchaseBudget.PurchaseBudgetServiceImpl" />
+
+	<!-- 国内出差预算审批单 -->
+	<bean id="travelBudgetNode"
+		class="com.seeyon.apps.bjev.node.TravelBudgetNode" />
+
+	<bean id="travelBudgetEnpService"
+		class="com.seeyon.apps.bjev.enp.travelBudget.TravelBudgetEnpImpl" />
+
+	<bean id="travelBudgetService"
+		class="com.seeyon.apps.bjev.services.impl.travelBudget.TravelBudgetServiceImpl" />
+
+
+	<bean id="mdataService"
+		class="com.seeyon.apps.bjev.services.webService.services.impl.MdataServiceImpl" />
+
+</beans>

@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html class="over_hidden h100b"><head>
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+    <link rel="stylesheet" href="../../../../../skin/dist/common/skin.css">
+    <link rel="stylesheet" href="../../../../../common/cap4/businessRelation/css/relation.css">
+    <script src="../../common/js/jquery-2.1.4.min.js"></script>
+    <script src="../../../../../common/cap4/common/underscore.js"></script>
+    <script src="../js/formSapBudget.js"></script>
+</head>
+
+<body class="over_hidden h100b " style="overflow: auto">
+<div class="relation_container form_area" style="height: 100%;" id="main">
+    <div class="panel_bottom">
+        <div id="zidongguanlian" class="">
+            <div class="zidong_guanlian">
+                <div class="guanlian_text">
+                    <div class="guanlian_div1">
+                        <span class="guanlian_mapSource">选择属性</span>
+                    </div>
+                    <div class="guanlian_div2">
+                        <span class="guanlian_mapObj">选择字段</span>
+                    </div>
+                </div>
+                <div id="systemMappingArea" class="guanlian_map">
+                    <div class="biz_groupguanlian">
+                        <div>
+                            <select id="einvoice" class="div_sel3 leftField">
+                                <option></option>
+                            </select>
+                        </div>
+                        <span class="iconfont cap-icon-ziduanjiantou rotate"></span>
+                        <div>
+                            <select id="formfield" class="div_sel3 rightField">
+                                <option></option>
+                            </select>
+                        </div>
+                        <span class="iconfont cap-icon-zengjia"></span>
+                        <span class="iconfont cap-icon-jianshao"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/template" id="template-einvoice_relation">
+    <div class="biz_groupguanlian">
+        <div>
+            <select id="einvoice" class="div_sel3 leftField">
+                <option></option>
+                {% _.each(fieldList, function (field) { %}
+                <option fieldtype="{{field.fieldname}}" {% if(field.fieldname == sourveValue){%}selected{% } %}>{{field.fieldvalue}}</option>
+                {% }); %}
+            </select>
+        </div>
+        <span class="iconfont cap-icon-ziduanjiantou rotate"></span>
+        <div>
+            <select id="formfield" class="div_sel3 rightField">
+                <option></option>
+                {% _.each(formFieldList, function (field) { %}
+                <option fieldname="{{field.fieldname}}" {% if(field.fieldname == targetValue){%}selected{% } %} ownertablename={{field.ownertablename}}>{{field.display}}</option>
+                {% }); %}
+            </select>
+        </div>
+        <span class="iconfont cap-icon-zengjia"></span>
+        <span class="iconfont cap-icon-jianshao"></span>
+    </div>
+</script>
+</body>
+</html>

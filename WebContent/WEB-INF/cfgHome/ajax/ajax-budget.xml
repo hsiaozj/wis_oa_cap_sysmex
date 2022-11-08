@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+	<bean>
+		<serviceName>budgetManagerService</serviceName>
+		<operations>
+			<op>findInfoData</op>
+		</operations>
+	</bean>
+</beans>
