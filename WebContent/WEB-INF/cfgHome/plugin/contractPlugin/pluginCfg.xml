@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin>
+    <id>contractPlugin</id>
+    <name>合同金额查询</name>
+    <category>912354</category>
+</plugin>
