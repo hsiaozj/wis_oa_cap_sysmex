@@ -47,4 +47,27 @@
 	<bean id="mdataService"
 		class="com.seeyon.apps.bjev.services.webService.services.impl.MdataServiceImpl" />
 
+	<!-- 系统推送工具 -->
+	<bean id="contractApprovalService"
+		  class="com.seeyon.apps.bjev.services.impl.contractApproval.ContractApprovalServiceImpl"/>
+
+	<bean id="contractApprovalEnpService"
+		  class="com.seeyon.apps.bjev.enp.contractApprovalBudget.ContractApprovalEnpImpl"/>
+
+	<!-- 商务合同审批单 -->
+	<bean id="businessContractNode"
+		  class="com.seeyon.apps.bjev.node.BusinessContractNode"/>
+
+	<!-- 技术标准合同审批单 -->
+	<bean id="technicalNode"
+		  class="com.seeyon.apps.bjev.node.TechnicalNode"/>
+
+	<!-- 技术商务合同审批单 -->
+	<bean id="technicalBusinessNode"
+		  class="com.seeyon.apps.bjev.node.TechnicalBusinessNode"/>
+
+	<!-- 采购商务合同审批单 -->
+	<bean id="procurementBusinessNode"
+		  class="com.seeyon.apps.bjev.node.ProcurementBusinessNode"/>
+
 </beans>
