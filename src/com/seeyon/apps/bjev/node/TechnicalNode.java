@@ -97,16 +97,16 @@ public class TechnicalNode extends BaseSuperNodeAction {
 
                 ContractApprovalService contractService= (ContractApprovalService) AppContext.getBean("contractApprovalService");
                 Map<String, Object> resultMap = contractService.doSapSyncMethod(businessResult);
-                log.info("resultData数据结果是："+resultMap);
+
                 if(resultMap != null) {
                     String status = (String) resultMap.get("status");
+                    String message = (String) resultMap.get("message");
+                    response.setReturnMsg(message);
                     if (StringUtils.isNotBlank(status) && "E".equals(status.trim())) {
                         response.setReturnCode(SuperNodeEnums.RunAction.BACK.getKey());
-                        response.setReturnMsg((String) resultMap.get("message"));
                         log.info("技术标准合同审批失败！");
                     }else {
                         response.setReturnCode(SuperNodeEnums.RunAction.FORWARD.getKey());
-                        response.setReturnMsg((String) resultMap.get("message"));
                         log.info("技术标准合同审批成功！");
                     }
                 }

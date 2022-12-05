@@ -14,7 +14,6 @@ import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.axis2.transport.http.HttpTransportProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-
 import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,22 +33,24 @@ public class ContractApprovalServiceImpl implements ContractApprovalService {
             OMElement isInput = new StAXOMBuilder(new ByteArrayInputStream(stringBuilder.toString().getBytes("UTF-8"))).getDocumentElement();
             OMElement result = doSapMethod(isInput, map,"urn");
             log.info("SAP返回结果"+result.toString());
-            String test = XmlUtil.subStringBetween(result.toString(), "<ZSTATUS>", "</ZSTATUS>");
-            log.info("测试解析出来的结果"+test);
-            String rstStr = result.getChildren().hasNext() ? result.getChildren().next().toString() : "";
-            log.info("解析结果"+rstStr);
 
-            if(StringUtils.isNotBlank(rstStr)){
-                String status = XmlUtil.subStringBetween(rstStr, "<ZSTATUS>", "</ZSTATUS>");
-                String message = XmlUtil.subStringBetween(rstStr, "<ZSTATUSTXT>", "</ZSTATUSTXT>");
-                log.info("通信信息"+status);
-                if(!status.contains("无法截取目标字符串")&&!message.contains("无法截取目标字符串")){
-                    returnResult.put("status", status);
-                    returnResult.put("message", message);
-                }else {
-                    returnResult.put("status", "E");
-                    returnResult.put("message", "合同审批SAP创建失败,返回信息为："+result.toString());
+            String rstStr = XmlUtil.subStringBetween(result.toString(), "<ES_SYSINFO>", "</ES_SYSINFO>");
+            log.info("解析结果1"+rstStr);
+
+            if(StringUtils.isNotBlank(rstStr)&&!rstStr.contains("无法截取目标字符串")){
+                String infostatus = XmlUtil.subStringBetween(rstStr, "<MSGTY>", "</MSGTY>");
+                log.info("解析结果2"+infostatus);
+                if(!infostatus.contains("无法截取目标字符串")&&"S".equalsIgnoreCase(infostatus)){
+                    String status = XmlUtil.subStringBetween(result.toString(), "<ZSTATUS>", "</ZSTATUS>");
+                    String message = XmlUtil.subStringBetween(result.toString(), "<ZSTATUSTXT>", "</ZSTATUSTXT>");
+                    if(!infostatus.contains("无法截取目标字符串")){
+                        returnResult.put("status", status);
+                        returnResult.put("message", message);
+                        return returnResult;
+                    }
                 }
+                returnResult.put("status", "E");
+                returnResult.put("message", "合同审批SAP创建失败,返回信息为："+result.toString());
             }
         }catch (Exception ex){
             ex.printStackTrace();
