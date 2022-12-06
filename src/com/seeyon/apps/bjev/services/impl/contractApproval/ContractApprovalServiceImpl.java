@@ -32,18 +32,16 @@ public class ContractApprovalServiceImpl implements ContractApprovalService {
             StringBuilder stringBuilder=new StringBuilder(xml);
             OMElement isInput = new StAXOMBuilder(new ByteArrayInputStream(stringBuilder.toString().getBytes("UTF-8"))).getDocumentElement();
             OMElement result = doSapMethod(isInput, map,"urn");
-            log.info("SAP返回结果"+result.toString());
 
             String rstStr = XmlUtil.subStringBetween(result.toString(), "<ES_SYSINFO>", "</ES_SYSINFO>");
-            log.info("解析结果1"+rstStr);
+            log.info("解析结果："+rstStr);
 
             if(StringUtils.isNotBlank(rstStr)&&!rstStr.contains("无法截取目标字符串")){
                 String infostatus = XmlUtil.subStringBetween(rstStr, "<MSGTY>", "</MSGTY>");
-                log.info("解析结果2"+infostatus);
                 if(!infostatus.contains("无法截取目标字符串")&&"S".equalsIgnoreCase(infostatus)){
                     String status = XmlUtil.subStringBetween(result.toString(), "<ZSTATUS>", "</ZSTATUS>");
                     String message = XmlUtil.subStringBetween(result.toString(), "<ZSTATUSTXT>", "</ZSTATUSTXT>");
-                    if(!infostatus.contains("无法截取目标字符串")){
+                    if(!status.contains("无法截取目标字符串")){
                         returnResult.put("status", status);
                         returnResult.put("message", message);
                         return returnResult;

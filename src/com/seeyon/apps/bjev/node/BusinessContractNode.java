@@ -20,7 +20,6 @@ import com.seeyon.ctp.workflow.supernode.enums.SuperNodeEnums;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -106,16 +105,15 @@ public class BusinessContractNode extends BaseSuperNodeAction {
                 if (resultMap != null) {
                     String status = (String) resultMap.get("status");
                     String message = (String) resultMap.get("message");
-                    response.setReturnMsg(message);
                     CAP4FormKit.setCellValue(form4DataMasterBean, "SAP返回状态", status);
                     CAP4FormKit.setCellValue(form4DataMasterBean, "SAP返回结果", message);
                     cap4FormManager.saveOrUpdateFormData(form4DataMasterBean, formId, true);
                     if (StringUtils.isNotBlank(status) && "E".equals(status.trim())) {
                         response.setReturnCode(SuperNodeEnums.RunAction.BACK.getKey());
-                        log.info("商务合同审批失败！");
+                        response.setReturnMsg("商务合同审批失败,请查看SAP返回结果。");
                     } else {
                         response.setReturnCode(SuperNodeEnums.RunAction.FORWARD.getKey());
-                        log.info("商务合同审批成功！");
+                        response.setReturnMsg("商务合同审批成功");
                     }
                 }
             }
