@@ -9,6 +9,7 @@ import com.seeyon.apps.collaboration.manager.ColManager;
 import com.seeyon.apps.collaboration.po.ColSummary;
 import com.seeyon.cap4.form.bean.FormDataMasterBean;
 import com.seeyon.cap4.form.bean.FormDataSubBean;
+import com.seeyon.cap4.form.service.CAP4FormManager;
 import com.seeyon.ctp.common.AppContext;
 import com.seeyon.ctp.common.exceptions.BusinessException;
 import com.seeyon.ctp.common.po.template.CtpTemplate;
@@ -32,6 +33,7 @@ public class TechnicalBusinessNode extends BaseSuperNodeAction {
 
     private TemplateManager templateManager = (TemplateManager) AppContext.getBean("templateManager");
 
+    private CAP4FormManager cap4FormManager = (CAP4FormManager) AppContext.getBean("cap4FormManager");
 
     @Override
     public void cancelAction(String s, String s1, Map<String, Object> map) throws BusinessException {
@@ -45,7 +47,7 @@ public class TechnicalBusinessNode extends BaseSuperNodeAction {
 
     @Override
     public SuperNodeResponse executeAction(String token, String activityId, Map<String, Object> param)  {
-        log.info("============技术商务合同审批开始==============");
+        log.info("============合同审批表（技术合同+商务）审批开始==============");
         SuperNodeResponse response = new SuperNodeResponse();
         try{
             Long summaryid = null;
@@ -60,13 +62,15 @@ public class TechnicalBusinessNode extends BaseSuperNodeAction {
                 form4DataMasterBean = (FormDataMasterBean)data.get("formDataBean");
             }
 
+            Long formId = null;
             ColSummary colSummary = colManager.getSummaryById(summaryid);
-            if(colSummary != null) {
+            if (colSummary != null) {
                 ctpTemplate = templateManager.getCtpTemplate(colSummary.getTempleteId());
+                formId = colSummary.getFormAppid();//表单ID
             }
 
             String templeteNumber = ctpTemplate.getTempleteNumber();
-            log.info("技术商务合同审批流程模板编号"+templeteNumber);
+            log.info("合同审批表（技术合同+商务）流程模板编号"+templeteNumber);
 
             Map<String, Object> documentData = new HashMap();
             List<Map> forMainList = new ArrayList();
@@ -83,7 +87,7 @@ public class TechnicalBusinessNode extends BaseSuperNodeAction {
                 Map<String, List<Map>> subTableData = CAP4FormKit.getSubTableData(subTables, "yyyy-MM-dd");
                 documentData.putAll(subTableData);
                 documentData.put("code",templeteNumber);
-                log.info("技术商务合同缓存下来的数据："+documentData);
+                log.info("合同审批表（技术合同+商务）缓存下来的数据："+documentData);
 
                 BusinessEnpService contractApprovalEnpService=(BusinessEnpService) AppContext.getBean("contractApprovalEnpService");
                 Map<String,Object> businessInfo= contractApprovalEnpService.preProcessMethod(documentData);
@@ -93,28 +97,31 @@ public class TechnicalBusinessNode extends BaseSuperNodeAction {
                 businessMap.put("configCategroy", templeteNumber);
                 businessMap.put("documentData", businessInfo);
                 Map<String, Object> businessResult = wshandleService.procMappingData(businessMap);
-                log.info("进入技术商务合同审批处理器业务信息："+businessResult);
+                log.info("合同审批表（技术合同+商务）处理器业务信息："+businessResult);
 
                 ContractApprovalService contractService= (ContractApprovalService) AppContext.getBean("contractApprovalService");
                 Map<String, Object> resultMap = contractService.doSapSyncMethod(businessResult);
+                log.info("返回结果" + resultMap.toString());
 
-                if(resultMap != null) {
+                if (resultMap != null) {
                     String status = (String) resultMap.get("status");
                     String message = (String) resultMap.get("message");
-                    response.setReturnMsg(message);
+                    CAP4FormKit.setCellValue(form4DataMasterBean, "SAP返回状态", status);
+                    CAP4FormKit.setCellValue(form4DataMasterBean, "SAP返回结果", message);
+                    cap4FormManager.saveOrUpdateFormData(form4DataMasterBean, formId, true);
                     if (StringUtils.isNotBlank(status) && "E".equals(status.trim())) {
                         response.setReturnCode(SuperNodeEnums.RunAction.BACK.getKey());
-                        log.info("技术商务审批失败！");
-                    }else {
+                        response.setReturnMsg("合同审批表（技术合同+商务）审批失败,请查看SAP返回结果。");
+                    } else {
                         response.setReturnCode(SuperNodeEnums.RunAction.FORWARD.getKey());
-                        log.info("技术商务审批成功！");
+                        response.setReturnMsg("合同审批表（技术合同+商务）审批成功");
                     }
                 }
             }
             response.setSuccess(true);
         }catch (Exception ex){
             ex.printStackTrace();
-            String message="技术商务合同审批单,系统推送数据时出现异常";
+            String message="合同审批表（技术合同+商务）,系统推送数据时出现异常";
             log.info("节点：TechnicalBusinessNode异常:",ex);
 
             String errInfo = LogUtil.getTrace(ex);
@@ -138,7 +145,7 @@ public class TechnicalBusinessNode extends BaseSuperNodeAction {
 
     @Override
     public String getNodeName() {
-        return "技术商务合同审批超级节点";
+        return "合同审批表（技术合同+商务）超级节点";
     }
 
     @Override

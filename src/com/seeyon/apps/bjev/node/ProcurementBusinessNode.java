@@ -9,6 +9,7 @@ import com.seeyon.apps.collaboration.manager.ColManager;
 import com.seeyon.apps.collaboration.po.ColSummary;
 import com.seeyon.cap4.form.bean.FormDataMasterBean;
 import com.seeyon.cap4.form.bean.FormDataSubBean;
+import com.seeyon.cap4.form.service.CAP4FormManager;
 import com.seeyon.ctp.common.AppContext;
 import com.seeyon.ctp.common.exceptions.BusinessException;
 import com.seeyon.ctp.common.po.template.CtpTemplate;
@@ -32,6 +33,7 @@ public class ProcurementBusinessNode extends BaseSuperNodeAction {
 
     private TemplateManager templateManager = (TemplateManager) AppContext.getBean("templateManager");
 
+    private CAP4FormManager cap4FormManager = (CAP4FormManager) AppContext.getBean("cap4FormManager");
 
     @Override
     public void cancelAction(String s, String s1, Map<String, Object> map) throws BusinessException {
@@ -60,9 +62,11 @@ public class ProcurementBusinessNode extends BaseSuperNodeAction {
                 form4DataMasterBean = (FormDataMasterBean)data.get("formDataBean");
             }
 
+            Long formId = null;
             ColSummary colSummary = colManager.getSummaryById(summaryid);
             if(colSummary != null) {
                 ctpTemplate = templateManager.getCtpTemplate(colSummary.getTempleteId());
+                formId = colSummary.getFormAppid();//表单ID
             }
 
             String templeteNumber = ctpTemplate.getTempleteNumber();
@@ -93,21 +97,24 @@ public class ProcurementBusinessNode extends BaseSuperNodeAction {
                 businessMap.put("configCategroy", templeteNumber);
                 businessMap.put("documentData", businessInfo);
                 Map<String, Object> businessResult = wshandleService.procMappingData(businessMap);
-                log.info("进入采购商务合同审批处理器业务信息："+businessResult);
+                log.info("采购商务合同处理器业务信息："+businessResult);
 
                 ContractApprovalService contractService= (ContractApprovalService) AppContext.getBean("contractApprovalService");
                 Map<String, Object> resultMap = contractService.doSapSyncMethod(businessResult);
+                log.info("返回结果" + resultMap.toString());
 
-                if(resultMap != null) {
+                if (resultMap != null) {
                     String status = (String) resultMap.get("status");
                     String message = (String) resultMap.get("message");
-                    response.setReturnMsg(message);
+                    CAP4FormKit.setCellValue(form4DataMasterBean, "SAP返回状态", status);
+                    CAP4FormKit.setCellValue(form4DataMasterBean, "SAP返回结果", message);
+                    cap4FormManager.saveOrUpdateFormData(form4DataMasterBean, formId, true);
                     if (StringUtils.isNotBlank(status) && "E".equals(status.trim())) {
                         response.setReturnCode(SuperNodeEnums.RunAction.BACK.getKey());
-                        log.info("采购商务合同审批失败！");
-                    }else {
+                        response.setReturnMsg("采购商务合同审批失败,请查看SAP返回结果。");
+                    } else {
                         response.setReturnCode(SuperNodeEnums.RunAction.FORWARD.getKey());
-                        log.info("采购商务合同审批成功！");
+                        response.setReturnMsg("采购商务合同审批成功");
                     }
                 }
             }

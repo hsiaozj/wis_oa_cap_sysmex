@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ContractApprovalEnpImpl implements BusinessEnpService {
-    private static final Logger log = Logger.getLogger(ContractApprovalEnpImpl.class);
     private CAP4FormManager cap4FormManager = (CAP4FormManager) AppContext.getBean("cap4FormManager");
 
     @Override
@@ -63,7 +62,6 @@ public class ContractApprovalEnpImpl implements BusinessEnpService {
         info.add(dataMap);
         paramMap.put("formmain_9999",info);
 
-        log.info("商务合同处理后的数据："+paramMap.toString());
         return paramMap;
     }
 
