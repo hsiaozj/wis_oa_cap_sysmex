@@ -47,9 +47,9 @@ public class ContractApprovalServiceImpl implements ContractApprovalService {
                         return returnResult;
                     }
                 }
-                returnResult.put("status", "E");
-                returnResult.put("message", "合同审批SAP创建失败,返回信息为："+result.toString());
             }
+            returnResult.put("status", "E");
+            returnResult.put("message", "合同审批SAP创建失败,返回信息为："+result.toString());
         }catch (Exception ex){
             ex.printStackTrace();
             log.info("合同审批出现异常"+ex.getMessage());

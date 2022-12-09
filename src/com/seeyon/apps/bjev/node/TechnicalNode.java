@@ -78,13 +78,13 @@ public class TechnicalNode extends BaseSuperNodeAction {
             if (form4DataMasterBean != null) {
                 DataHandleService wshandleService = (DataHandleService) AppContext.getBean("dataHandleWebservice");
                 // 获取主表缓存数据
-                forMainList = CAP4FormKit.getFormDataMasterBeanData(form4DataMasterBean, "yyyy-MM-dd");
+                forMainList = CAP4FormKit.getFormDataMasterBeanData(form4DataMasterBean, "yyyyMMdd");
                 String forMainTableName = form4DataMasterBean.getFormTable().getTableName();
                 documentData.put(forMainTableName, forMainList);
 
                 // 获取从表数据缓存
                 Map<String, List<FormDataSubBean>> subTables = form4DataMasterBean.getSubTables();
-                Map<String, List<Map>> subTableData = CAP4FormKit.getSubTableData(subTables, "yyyy-MM-dd");
+                Map<String, List<Map>> subTableData = CAP4FormKit.getSubTableData(subTables, "yyyyMMdd");
                 documentData.putAll(subTableData);
                 documentData.put("code",templeteNumber);
                 log.info("合同审批表（技术标准）缓存下来的数据："+documentData);
@@ -109,12 +109,12 @@ public class TechnicalNode extends BaseSuperNodeAction {
                     CAP4FormKit.setCellValue(form4DataMasterBean, "SAP返回状态", status);
                     CAP4FormKit.setCellValue(form4DataMasterBean, "SAP返回结果", message);
                     cap4FormManager.saveOrUpdateFormData(form4DataMasterBean, formId, true);
-                    if (StringUtils.isNotBlank(status) && "E".equals(status.trim())) {
-                        response.setReturnCode(SuperNodeEnums.RunAction.BACK.getKey());
-                        response.setReturnMsg("合同审批表（技术标准）审批失败,请查看SAP返回结果。");
-                    } else {
+                    if (StringUtils.isNotBlank(status) && "S".equalsIgnoreCase(status.trim())) {
                         response.setReturnCode(SuperNodeEnums.RunAction.FORWARD.getKey());
                         response.setReturnMsg("合同审批表（技术标准）审批成功");
+                    } else {
+                        response.setReturnCode(SuperNodeEnums.RunAction.BACK.getKey());
+                        response.setReturnMsg("合同审批表（技术标准）审批失败,请查看SAP返回结果。");
                     }
                 }
             }

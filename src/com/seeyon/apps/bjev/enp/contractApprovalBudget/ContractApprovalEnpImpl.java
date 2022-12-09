@@ -6,8 +6,6 @@ import com.seeyon.apps.bjev.util.SnowFlakeUtil;
 import com.seeyon.cap4.form.bean.FormBean;
 import com.seeyon.cap4.form.service.CAP4FormManager;
 import com.seeyon.ctp.common.AppContext;
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +53,6 @@ public class ContractApprovalEnpImpl implements BusinessEnpService {
         dataMap.put("field0999", "OA");
         //接收方
         dataMap.put("field0998", "SAP");
-        dataMap.put("field0997", "EC001");
         long id = snowFlakeUtil.nextId();
         dataMap.put("field0996", String.valueOf(id));
         dataMap.put("field0995", "ZH");
