@@ -124,15 +124,15 @@ public class Xml2JsonUtil {
                 "<RECEIVER>SAP</RECEIVER>" +
                 "<DTSEND>"+"20221201144920125"+"</DTSEND>" +
                 "<INTFID>EC002</INTFID>" +
-                "<MSGID>"+"1669964266299"+"</MSGID>" +
-                "<POMSGID>"+"1669964266200"+"</POMSGID>" +
+                "<MSGID>"+System.currentTimeMillis()+""+"</MSGID>" +
+                "<POMSGID>"+System.currentTimeMillis()+""+1+"</POMSGID>" +
                 "<LANGUAGE>ZH</LANGUAGE>" +
                 "<SERVICENAME>111</SERVICENAME>" +
                 "</IS_SYSINFO>"+
                 "</ROOT>";
 
         OMElement isInput = new StAXOMBuilder(new ByteArrayInputStream(xml.getBytes("UTF-8"))).getDocumentElement();
-        String methodName = "ZRFC_FI_EC002";
+        String methodName = "ZRFC_FI_OA006";
         String nameSpace = "urn:sap-com:document:sap:rfc:functions";
         String wsUserName = "oa2po";
         String wsPassWord = "Aa123456";
@@ -166,12 +166,24 @@ public class Xml2JsonUtil {
         String rst = result.toString();
         System.out.println("SAP返回数据:" + rst);
 
-        String status = XmlUtil.subStringBetween(rst, "<ZSTATUS>", "</ZSTATUS>");
-        System.out.println(status);
+        String status = XmlUtil.subStringBetween(rst, "<MSGTY>", "</MSGTY>");
+        String msg = XmlUtil.subStringBetween(rst, "<MSGTX>", "</MSGTX>");
+        if(status.equalsIgnoreCase("E")){
+            List<Map> errList = new ArrayList();
+            Map errMap = new HashMap();
+            errMap.put("txt",msg);
+
+            errList.add(errMap);
+
+            Map errRstMap = new HashMap();
+            errRstMap.put("rstList",errList);
+            System.out.println("进入");
+        }
+
         JSONObject rstJson= xml2JSON(rst);
         System.out.println(rstJson);
 
-        Map rspJs = (Map) rstJson.get("ZRFC_FI_EC002.Response");
+        Map rspJs = (Map) rstJson.get("ZRFC_FI_OA006.Response");
         List busJsArr = (List) rspJs.get("ES_BUSINFO");
         System.out.println(busJsArr);
 
@@ -197,11 +209,22 @@ public class Xml2JsonUtil {
             List zjylxList = (List) detailMap.get("ZJYLX");
             String zjylx = (String) zjylxList.get(0);
 
-            List gjahrList = (List) detailMap.get("GJAHR");
-            String gjahr = (String) gjahrList.get(0);
+//            List gjahrList = (List) detailMap.get("GJAHR");
+//            String gjahr = (String) gjahrList.get(0);
+            System.out.println("***********************");
+            if(detailMap.get("GJAHR")!=null && detailMap.get("GJAHR") instanceof List){
+                List zjymxList = (List) detailMap.get("GJAHR");
+                String zjymx = (String) zjymxList.get(0);
+                System.out.println("====================================gjahr");
+            }
 
-            List zjymxList = (List) detailMap.get("ZJYMX");
-            String zjymx = (String) zjymxList.get(0);
+//            List zjymxList = (List) detailMap.get("ZJYMX");
+//            String zjymx = (String) zjymxList.get(0);
+
+            if(dataMap.get("ZJYMX")!=null&&dataMap.get("ZJYMX") instanceof List){
+                List zjymxList = (List) detailMap.get("ZJYMX");
+                String zjymx = (String) zjymxList.get(0);
+            }
 
             List zglgxList = (List) detailMap.get("ZGLGX");
             String zglgx = (String) zglgxList.get(0);
@@ -257,8 +280,8 @@ public class Xml2JsonUtil {
             allDataMap.put("zglmc",zglmc);
             allDataMap.put("zjyxe",zjyxe);
             allDataMap.put("zjylx",zjylx);
-            allDataMap.put("gjahr",gjahr);
-            allDataMap.put("zjymx",zjymx);
+            //allDataMap.put("gjahr",gjahr);
+            //allDataMap.put("zjymx",zjymx);
             allDataMap.put("zglgx",zglgx);
             allDataMap.put("zrzje",zrzje);
             allDataMap.put("zhsmc",zhsmc);

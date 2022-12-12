@@ -33,9 +33,37 @@ public class ContractResources extends BaseResource{
 	public static List<CtrlFieldType> loadInfo(){
 		List<CtrlFieldType> tmpList = new ArrayList<CtrlFieldType>();
 		CtrlFieldType temp = null;
-		temp = new CtrlFieldType("AMOUNT", "可用预算金额", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		temp = new CtrlFieldType("ZGLMC", "关联方名称", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
 		tmpList.add(temp);
-		
+		temp = new CtrlFieldType("ZJYXE", "年度预算额度", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+		temp = new CtrlFieldType("ZJYLX", "交易类型", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+		temp = new CtrlFieldType("GJAHR", "年度", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+		temp = new CtrlFieldType("ZRZJE", "实际入账金额", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+		temp = new CtrlFieldType("ZHSMC", "核算单位名称", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+		temp = new CtrlFieldType("ZHTYXD", "合同结束日期", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+		temp = new CtrlFieldType("ZHTLJJE", "合同累计执行金额", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+		temp = new CtrlFieldType("ZKYED", "新签合同可用额度", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+		temp = new CtrlFieldType("ZHTFPS", "当年合同分配额剩余可用", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+		temp = new CtrlFieldType("ZHTJE", "合同总额", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+		temp = new CtrlFieldType("ZHTFPZ", "当年合同分配额总额", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+		temp = new CtrlFieldType("ZHTFPY", "当年合同分配额已占用", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+		temp = new CtrlFieldType("ZGLHT", "合同号", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+		temp = new CtrlFieldType("ZHTYXQ", "合同开始日期", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
+
 		return tmpList;
 	}
 	

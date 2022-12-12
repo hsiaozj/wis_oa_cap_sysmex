@@ -144,8 +144,8 @@
 				 current_dialog = $.dialog({
 		                url:'/seeyon/signincontract/signincontract.do?method=getContractPage&fieldId='+fieldId+'&formId='+formId+'&formRecordId='+formRecordId+"&subRecordId="+subRecordId+"&subName="+encodeURIComponent(subName),
 		                title: "合同金额信息",
-		                width: 1000,
-		                height: 500,
+		                width: 1500,
+		                height: 800,
 		                targetWindow: getCtpTop(),
 		                buttons: [{
 		                    text: $.i18n('common.button.ok.label'),
