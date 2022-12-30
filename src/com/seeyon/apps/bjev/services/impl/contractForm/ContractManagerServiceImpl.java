@@ -55,11 +55,11 @@ public class ContractManagerServiceImpl extends BaseServiceImpl implements Contr
         String msgId = System.currentTimeMillis()+"";
         String pomsgId = System.currentTimeMillis()+1+"";
         Map config = new HashMap();
-        config.put("wsUrl", "http://120.133.56.147:8022/sapdev/XISOAPAdapter/MessageServlet?senderParty=&senderService=BS_OA&receiverParty=&receiverService=&interface=SI_OA006_OA_REQ&interfaceNamespace=http://www.bjev.com.cn/oa");
+        config.put("wsUrl", "http://120.133.56.147:8022/sapdisp/XISOAPAdapter/MessageServlet?senderParty=&senderService=BS_OA&receiverParty=&receiverService=&interface=SI_OA006_OA_REQ&interfaceNamespace=http://www.bjev.com.cn/oa");
         config.put("wsFunction", "ZRFC_FI_OA006");
         config.put("wsNameSpace", "urn:sap-com:document:sap:rfc:functions");
-        config.put("wsUserName", "oa2po");
-        config.put("wsPassWord", "Aa123456");
+        config.put("wsUserName", WsFlow.getSth("wsUserName"));
+        config.put("wsPassWord", WsFlow.getSth("wsPassWord"));
 
         String xml ="<ROOT>"+
                 "<IS_BUSINFO>" +
@@ -85,6 +85,7 @@ public class ContractManagerServiceImpl extends BaseServiceImpl implements Contr
                     "</IS_SYSINFO>"+
                 "</ROOT>";
 
+        log.info("config:"+config);
         OMElement isInput = new StAXOMBuilder(new ByteArrayInputStream(xml.getBytes("UTF-8"))).getDocumentElement();
         OMElement result = doSapMethod(isInput, config,"urn");
         String rst = result.toString();
@@ -95,6 +96,7 @@ public class ContractManagerServiceImpl extends BaseServiceImpl implements Contr
             List<Map> errList = new ArrayList();
             Map errMap = new HashMap();
             errMap.put("txt",msg);
+            errMap.put("flag","E");
 
             errList.add(errMap);
 
@@ -144,6 +146,8 @@ public class ContractManagerServiceImpl extends BaseServiceImpl implements Contr
                 String zhtyxd = this.checkListNotNull(detailMap, "ZHTYXD");
                 String zhtyxq = this.checkListNotNull(detailMap, "ZHTYXQ");
 
+                String zjymx = this.checkListNotNull(detailMap, "ZJYMX");
+
                 allDataMap.put("ZGLMC", zglmc);
                 allDataMap.put("ZJYXE", zjyxe);
                 allDataMap.put("ZJYLX", zjylx);
@@ -161,8 +165,9 @@ public class ContractManagerServiceImpl extends BaseServiceImpl implements Contr
                 allDataMap.put("ZGLDM", zgldm);
                 allDataMap.put("ZGLHT", zglht);
                 allDataMap.put("ZHTYXQ", zhtyxq);
+                allDataMap.put("ZJYMX", zjymx);
                 allDataMap.put("txt", "查询成功");
-
+                allDataMap.put("flag", "S");
                 allDataList.add(allDataMap);
             }
 
@@ -173,6 +178,7 @@ public class ContractManagerServiceImpl extends BaseServiceImpl implements Contr
             List<Map> errList = new ArrayList();
             Map errMap = new HashMap();
             errMap.put("txt","查询异常，请检查输入条件");
+            errMap.put("flag","E");
 
             errList.add(errMap);
 

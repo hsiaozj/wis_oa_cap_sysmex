@@ -63,6 +63,8 @@ public class ContractResources extends BaseResource{
 		tmpList.add(temp);
 		temp = new CtrlFieldType("ZHTYXQ", "合同开始日期", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
 		tmpList.add(temp);
+		temp = new CtrlFieldType("flag", "状态标识", Enums.FieldType.DECIMAL, new FormFieldComEnum[] { FormFieldComEnum.TEXT, FormFieldComEnum.TEXTAREA});
+		tmpList.add(temp);
 
 		return tmpList;
 	}

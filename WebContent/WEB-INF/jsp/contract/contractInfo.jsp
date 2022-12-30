@@ -53,6 +53,12 @@
 					sortable: true,
 					align: 'center'
 				}, {
+					display: '交易明细',
+					name: 'ZJYMX',
+					width: '10%',
+					sortable: true,
+					align: 'center'
+				}, {
 					display: '合同总额',
 					name: 'ZHTJE',
 					width: '10%',
@@ -115,6 +121,12 @@
 				}, {
 					display: '状态信息',
 					name: 'txt',
+					width: '10%',
+					sortable: true,
+					align: 'center'
+				},{
+					display: '状态标识',
+					name: 'flag',
 					width: '10%',
 					sortable: true,
 					align: 'center'
